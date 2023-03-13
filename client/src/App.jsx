@@ -6,7 +6,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <header className="w-full flex justify-between items-center px-8 py-2 bg-white border-b-2 border-b-[#F1F1F4] ">
+      <header className="w-full flex justify-between items-center px-2 sm:px-8 py-2 bg-white border-b-2 border-b-[#F1F1F4] ">
         <Link to={"/"}>
           <img src={logo} alt="Pillu" className="h-12 w-full object-contain " />
         </Link>

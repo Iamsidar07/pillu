@@ -4,7 +4,7 @@ import { downloadImage } from "../utils"
 
 const Card = ({_id,name,photo,prompt}) => {
   return (
-    <div className='rounded group relative shadow-card hover:shadow-cardhover card'>
+    <div className='rounded group relative shadow-card hover:shadow-cardhover card bg-slate-200'>
       <img src={photo} alt={prompt} className="w-full h-auto object-contain rounded" />
       <div className="group-hover:flex flex-col max-h-[94%] hidden absolute bottom-0 left-0 right-0 bg-[#10131f] m-2 p-4 rounded">
         <p className='text-white text-sm overflow-y-auto prompt'>{prompt}</p>

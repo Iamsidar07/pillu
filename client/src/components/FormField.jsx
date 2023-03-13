@@ -4,7 +4,7 @@ const FormField = ({labelName,name,isSupriseMe,handleChange,handleSupriseMe,valu
   return (
     <div>
       <div className="flex items-center gap-2 mb-2">
-        <label htmlFor={name} >{labelName}</label>
+        <label htmlFor={name} className="font-bold" >{labelName}</label>
         {
           isSupriseMe && (
             <button type='button' onClick={handleSupriseMe} className="bg-[#ECECF1] text-xs px-2 py-1 rounded-sm font-semibold">Suprise me</button>
