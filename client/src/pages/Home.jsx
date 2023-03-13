@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Card, Loader, FormField } from "../components"
+import { showToast } from '../utils';
 const Home = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [posts, setPosts] = useState(null);
@@ -19,11 +20,10 @@ const Home = () => {
 
         if (response.ok) {
           const result = await response.json();
-          console.log({ result })
           setPosts(result.data.reverse())
         }
       } catch (error) {
-        alert(error)
+        showToast(error)
       } finally {
         setIsLoading(false);
       }

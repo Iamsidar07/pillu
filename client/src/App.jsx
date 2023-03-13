@@ -2,6 +2,8 @@ import React from "react"
 import { BrowserRouter, Route, Routes, Link } from "react-router-dom"
 import { Home, CreatePost } from "./pages"
 import { logo } from "./assets"
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify"
 function App() {
 
   return (
@@ -15,6 +17,7 @@ function App() {
         </Link>
       </header>
       <main className="sm:px-8 px-4 py-4 w-full min-h-[calc(100vh-28px)] bg-white">
+        <ToastContainer/>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/create-post" element={<CreatePost />} />
