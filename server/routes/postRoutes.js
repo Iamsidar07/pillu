@@ -5,21 +5,25 @@ import Post from "../mongodb/models/Post.js";
 
 dotenv.config();
 
-const router=express.Router();
+const router = express.Router();
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key:process.env.CLOUDINARY_API_KEY,
-    api_secret:process.env.CLOUDINARY_SECRETE_KEY
-    
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_SECRETE_KEY
+
 })
+
+function getRandomNumber() {
+    return Math.floor(Math.random() * 1000);
+}
 
 // get all post route 
 
-router.route("/").get(async(req,res)=>{
+router.route("/").get(async (req, res) => {
     try {
-        const posts=await Post.find({});
-        res.status(200).json({success:true,data:posts})
+        const posts = await Post.find({});
+        res.status(200).json({ success: true, data: posts })
     } catch (error) {
         res.status(500).json({ success: false, message: error })
     }
@@ -27,23 +31,28 @@ router.route("/").get(async(req,res)=>{
 
 // create post route
 router.route("/").post(async (req, res) => {
-     const { name,prompt,photo }=req.body;
-     try {
-         const photoUrl = await cloudinary.uploader.upload(photo);
-         console.log({photoUrl})
-         const newPost = await Post.create({
-             name,
-             prompt,
-             photo: photoUrl.url
-         })
-         
-         res.status(200).json({ success: true, data: newPost })
-     } catch (error) {
-         res.status(500).json({
-            success:false,
-            message:error
-         })
-     }
+    const { name, prompt, photo } = req.body;
+    const randomId = getRandomNumber();
+    const profilePhoto = `https://api.multiavatar.com/${randomId}.png`;
+    try {
+        const photoUrl = await cloudinary.uploader.upload(photo);
+       
+        const newPost = await Post.create({
+            name,
+            prompt,
+            photo: photoUrl.url,
+            profilePhoto,
+        })
+
+        res.status(200).json({ success: true, data: newPost })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error
+        })
+    }
 })
+
+
 
 export default router;
