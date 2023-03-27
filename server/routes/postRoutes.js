@@ -34,7 +34,7 @@ router.route("/").post(async (req, res) => {
     const { name, prompt, photo } = req.body;
     const randomId = getRandomNumber();
     const profilePhoto = `https://api.multiavatar.com/${randomId}.png`;
-    console.log({profilePhoto,randomId})
+    // console.log({profilePhoto,randomId})
     try {
         const photoUrl = await cloudinary.uploader.upload(photo);
        
