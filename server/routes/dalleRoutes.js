@@ -26,8 +26,8 @@ router.route('/').post(async (req, res) => {
     try {
         const { prompt,numberOfImages } = req.body;
         // console.log("creating",prompt);
-        const resposeData=[];
-        const size=getRandomSize();
+        const responseData=[];
+        // const size=getRandomSize();
         // console.log(size,typeof numberOfImages)
         const aiResponse = await openai.createImage({
             prompt,
@@ -36,9 +36,9 @@ router.route('/').post(async (req, res) => {
             response_format: 'b64_json',
         });
        
-        const image = aiResponse.data.data[0].b64_json;
-        aiResponse.data.data.map((item)=>resposeData.push(item.b64_json));
-        res.status(200).json({ photo: resposeData });
+        // const image = aiResponse.data.data[0].b64_json;
+        aiResponse.data.data.map((item)=>responseData.push(item.b64_json));
+        res.status(200).json({photo:responseData[0], photos: responseData });
     } catch (error) {
         console.error(error);
         res.status(500).send(error?.response.data.error.message || 'Something went wrong');

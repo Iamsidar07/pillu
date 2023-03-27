@@ -31,25 +31,45 @@ router.route("/").get(async (req, res) => {
 
 // create post route
 router.route("/").post(async (req, res) => {
-    const { name, prompt, photo, numberOfImages } = req.body;
+    const { name, prompt, photos,photo, numberOfImages } = req.body;
     const randomId = getRandomNumber();
     const profilePhoto = `https://api.multiavatar.com/${randomId}.png`;
-    // console.log({profilePhoto,randomId})
-    try {
-        const photoUrl = await cloudinary.uploader.upload(photo);
 
+    console.log({profilePhoto,randomId,photos,photo})
+    try {
+
+        //upload all photos to the cloudinary
+        // const photosUrl = [];
+
+        // Upload all photos to Cloudinary
+        const photoUploadPromises = photos.map(async (element) => {
+            const photoUrl = await cloudinary.uploader.upload(element);
+            console.log({ photoUrl });
+            return photoUrl.url;
+        });
+
+
+        
+        const photosUrl = await Promise.all(photoUploadPromises);
+
+        const image = await cloudinary.uploader.upload(photo);
+
+
+        console.log({photosUrl})
         const newPost = await Post.create({
             name,
             prompt,
-            photo: photoUrl.url,
+            photo:image.url,
+            photos:photosUrl,
             profilePhoto: profilePhoto,
             numberOfImages,
         })
-
-        console.log(newPost,profilePhoto)
+        console.log(newPost, profilePhoto, photosUrl)
+        
 
         res.status(200).json({ success: true, data: newPost })
     } catch (error) {
+        console.log(error)
         res.status(500).json({
             success: false,
             message: error
