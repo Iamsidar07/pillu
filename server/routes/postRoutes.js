@@ -31,7 +31,7 @@ router.route("/").get(async (req, res) => {
 
 // create post route
 router.route("/").post(async (req, res) => {
-    const { name, prompt, photo } = req.body;
+    const { name, prompt, photo, numberOfImages } = req.body;
     const randomId = getRandomNumber();
     const profilePhoto = `https://api.multiavatar.com/${randomId}.png`;
     // console.log({profilePhoto,randomId})
@@ -43,6 +43,7 @@ router.route("/").post(async (req, res) => {
             prompt,
             profilePhoto:profilePhoto,
             photo: photoUrl.url,
+            numberOfImages,
         })
 
         res.status(200).json({ success: true, data: newPost })
