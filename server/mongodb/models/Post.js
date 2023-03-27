@@ -5,6 +5,7 @@ const Post=new mongoose.Schema({
     prompt:{type: String,required:true},
     photo:{type: String,required:true},
     profilePhoto:{type: String,required:true},
+    numberOfImages:{type:Number,required:true}
 })
 
 const PostSchema=mongoose.model('Post',Post);

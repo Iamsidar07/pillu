@@ -15,7 +15,7 @@ cloudinary.config({
 })
 
 function getRandomNumber() {
-    return Math.floor(Math.random() * 1000);
+    return Math.ceil(Math.random() * 11);
 }
 
 // get all post route 
@@ -37,14 +37,16 @@ router.route("/").post(async (req, res) => {
     // console.log({profilePhoto,randomId})
     try {
         const photoUrl = await cloudinary.uploader.upload(photo);
-       
+
         const newPost = await Post.create({
             name,
             prompt,
-            profilePhoto:profilePhoto,
             photo: photoUrl.url,
+            profilePhoto: profilePhoto,
             numberOfImages,
         })
+
+        console.log(newPost,profilePhoto)
 
         res.status(200).json({ success: true, data: newPost })
     } catch (error) {
