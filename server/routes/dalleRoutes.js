@@ -8,6 +8,7 @@ const router = express.Router();
 // console.log(process.env.OPENAI_API_KEY)
 const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY,
+    organization: process.env.OPENAI_ORGANIZATION_ID
 });
 
 const openai = new OpenAIApi(configuration);
@@ -16,9 +17,22 @@ router.route('/').get((req, res) => {
     res.status(200).json({ message: 'Hello from DALL-E!' });
 });
 
-function getRandomSize(){
-   const sizes = ['1024x1024', '512x512', '256x256']
-    return sizes[Math.floor(Math.random() * 3)]
+
+
+const getOpenAiPrompt=async (userInputPrompt)=>{
+    const completion=await openai.createChatCompletion({
+         model:"gpt-3.5-turbo",
+         messages:[
+            {
+                 role: "system", content: "I want you to act as a highly experienced photographer. You will use rich and highly artistic language when describing your photo prompts — the prompt must be one sentence long"
+            },
+            {
+                role:"user",content:userInputPrompt   
+            }
+         ]
+    })
+
+    return completion.data.choices[0].message.content;
 }
 
 
@@ -29,8 +43,9 @@ router.route('/').post(async (req, res) => {
         const responseData=[];
         // const size=getRandomSize();
         // console.log(size,typeof numberOfImages)
+        const openAiEnhancedPrompt=await getOpenAiPrompt(prompt);
         const aiResponse = await openai.createImage({
-            prompt,
+            prompt:openAiEnhancedPrompt,
             n: numberOfImages,
             size:"1024x1024",
             response_format: 'b64_json',
